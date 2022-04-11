@@ -15,3 +15,5 @@ stages:
     steps:
     - script: dotnet build --configuration $(buildConfiguration)
       displayName: 'dotnet build $(buildConfiguration)'
+    - script: dotnet publish --configuration $(buildConfiguration) --output publish
+      displayName: 'Publish DotNet artifact'
