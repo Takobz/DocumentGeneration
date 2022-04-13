@@ -48,7 +48,7 @@ stages:
 
     - task: PublishBuildArtifacts@1
       inputs:
-        PathtoPublish: $(System.DefaultWorkingDirectory)/publishPackage
+        PathtoPublish: $(System.DefaultWorkingDirectory)/publishPackage.zip
         ArtifactName: 'publishPackage'
       displayName: Publish Artifact
 
