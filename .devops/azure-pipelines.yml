@@ -19,11 +19,16 @@ stages:
     - bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
       displayName: Transiple Bicep to ARM
 
-    - task: AzureResourceGroupDeployment@2
+    - task: AzureResourceManagerTemplateDeployment@3
       inputs:
-        azureSubscription: $(serviceConnection)
+        deploymentScope: Resource Group
+        action: Create Or Update Resource Group
+        location: 'South Africa North'
+        azureResourceManagerConnection:  $(serviceConnection)
         resourceGroupName: $(resourceGroupName)
         csmFile: 'infra/main.json'
+        deploymentMode: Incremental
+        templateLocation: Linked artifact
         overrideParameters: >-
           -webAppName $(webAppName)
       displayName: Override Parameters

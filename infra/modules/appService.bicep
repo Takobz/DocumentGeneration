@@ -1,5 +1,5 @@
 param webAppName string
-param sku string = 'F1'
+param sku string = 'B1'
 param linuxFxVersion string = 'node|14-lts'
 param location string = resourceGroup().location
 param repositoryUrl string = 'https://github.com/Takobz/DocumentGeneration'
