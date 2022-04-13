@@ -20,7 +20,7 @@ stages:
       inputs:
         scriptType: bash
         azureSubscription: $(serviceConnection)
-        arguments: --file $(System.DefaultWorkingDirectory)/infra/main.bicep --outdir $(System.DefaultWorkingDirectory)/main.json
+        arguments: --file "infra/main.bicep" --outfile "infra/main.json"
         inlineScript:  az bicep build
       displayName: Transiple Bicep to ARM
 
@@ -28,7 +28,7 @@ stages:
       inputs:
         azureSubscription: $(serviceConnection)
         resourceGroupName: $(resourceGroupName)
-        csmFile: $(System.DefaultWorkingDirectory)/main.json
+        csmFile: 'infra/main.json'
         overrideParameters: >-
           -webAppName $(webAppName)
       displayName: Override Parameters
