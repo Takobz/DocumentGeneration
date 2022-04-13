@@ -16,12 +16,7 @@ stages:
   jobs:
   - job: DeployInfra
     steps:
-    - task: AzureCLI@2
-      inputs:
-        scriptType: bash
-        azureSubscription: $(serviceConnection)
-        arguments: --file "DocumentationGeneration/infra/main.bicep" --outfile "DocumentationGeneration/infra/main.json"
-        inlineScript:  az bicep build
+    - bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
       displayName: Transiple Bicep to ARM
 
     - task: AzureResourceGroupDeployment@2
