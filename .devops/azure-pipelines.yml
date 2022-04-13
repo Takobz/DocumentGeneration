@@ -20,7 +20,7 @@ stages:
       inputs:
         scriptType: bash
         azureSubscription: $(serviceConnection)
-        arguments: --file "infra/main.bicep" --outfile "infra/main.json"
+        arguments: --file "DocumentationGeneration/infra/main.bicep" --outfile "DocumentationGeneration/infra/main.json"
         inlineScript:  az bicep build
       displayName: Transiple Bicep to ARM
 
