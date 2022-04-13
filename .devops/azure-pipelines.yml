@@ -20,7 +20,7 @@ stages:
       inputs:
         scriptType: bash
         azureSubscription: $(serviceConnection)
-        arguments: --file $(System.DefaultWorkingDirectory)/infra/main.bicep --outdir $(System.DefaultWorkingDirectory)/main.json
+        arguments: --file $(System.DefaultWorkingDirectory)/**/infra/main.bicep --outdir $(System.DefaultWorkingDirectory)/main.json
         inlineScript:  az bicep build
       displayName: Transiple Bicep to ARM
 
@@ -31,6 +31,7 @@ stages:
         csmFile: $(System.DefaultWorkingDirectory)/main.json
         overrideParameters: >-
           -webAppName $(webAppName)
+      displayName: Override Parameters
 
   - job: BuildAndDeployCode
     steps:
