@@ -27,10 +27,10 @@ stages:
     - task: AzureResourceGroupDeployment@2
       inputs:
         azureSubscription: $(serviceConnection)
-        resourceGroupName: ${{ resourceGroupName }}
+        resourceGroupName: $(resourceGroupName)
         csmFile: $(System.DefaultWorkingDirectory)/main.json
         overrideParameters: >-
-          -webAppName ${{ webAppName }}
+          -webAppName $(webAppName)
 
   - job: BuildAndDeployCode
     steps:
@@ -66,8 +66,8 @@ stages:
       - task: AzureRmWebAppDeployment@4
         inputs:
           ConnectionType: 'AzureRM'
-          azureSubscription: ${{ serviceConnection }}
+          azureSubscription: $(serviceConnection)
           appType: 'webAppLinux'
           WebAppName: 'wapp-student-training'
-          ResourceGroupName: ${{ resourceGroupName }}
+          ResourceGroupName: $(resourceGroupName)
           packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
