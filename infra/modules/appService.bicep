@@ -1,6 +1,6 @@
 param webAppName string
 param sku string = 'B1'
-param linuxFxVersion string = 'node|14-lts'
+param linuxFxVersion string = 'DOTNETCORE|3.0'
 param location string = resourceGroup().location
 param repositoryUrl string = 'https://github.com/Takobz/DocumentGeneration'
 param branch string = 'master'
@@ -32,7 +32,7 @@ resource appService 'Microsoft.Web/sites@2020-06-01' = {
 }
 
 resource srcControls 'Microsoft.Web/sites/sourcecontrols@2020-06-01' = {
-  name: '${appService.name}/web'
+  name: '${appService.name}-src-controls'
   properties: {
     repoUrl: repositoryUrl
     branch: branch
