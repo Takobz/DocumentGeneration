@@ -1,6 +1,6 @@
 param webAppName string
 param sku string = 'B1'
-param linuxFxVersion string = 'DOTNETCORE|3.0'
+param linuxFxVersion string = 'DOTNETCORE|3.1'
 param location string = resourceGroup().location
 param repositoryUrl string = 'https://github.com/Takobz/DocumentGeneration'
 param branch string = 'master'
