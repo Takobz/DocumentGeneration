@@ -39,11 +39,13 @@ stages:
     - task: DotNetCoreCLI@1
       inputs:
         command: build
+        projects: $(System.DefaultWorkingDirectory)/**/*.csproj
       displayName: Build
 
     - task: DotNetCoreCLI@1
       inputs:
         command: publish
+        projects: $(System.DefaultWorkingDirectory)/**/*.csproj
         arguments: --configuration release --output $(System.DefaultWorkingDirectory)
         zipAfterPublish: true
       displayName: dotnet publish
