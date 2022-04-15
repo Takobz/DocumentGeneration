@@ -33,7 +33,7 @@ stages:
           -webAppName $(webAppName)
       displayName: Override Parameters
 
-  - job: BuildAndDeployCode
+  - job: BuildAndPublish
     dependsOn: DeployInfra
     steps:
     - task: DotNetCoreCLI@1
@@ -44,14 +44,14 @@ stages:
     - task: DotNetCoreCLI@1
       inputs:
         command: publish
-        arguments: --configuration release --output publishPackage
+        arguments: --configuration release --output $(System.DefaultWorkingDirectory)
         zipAfterPublish: true
       displayName: dotnet publish
 
-    - task: PublishBuildArtifacts@1
+    - task: PublishPipelineArtifact@1
       inputs:
-        PathtoPublish: $(System.DefaultWorkingDirectory)/publishPackage.zip
-        ArtifactName: 'publishPackage'
+        targetPath: '$(System.DefaultWorkingDirectory)/*.zip'
+        artifact: publishPackage
       displayName: Publish Artifact
 
 - stage: DeployWebApp
@@ -62,6 +62,7 @@ stages:
     steps:
       - task: DownloadPipelineArtifact@2
         inputs:
+          source: 'current'
           artifact: 'publishPackage'
           path: $(System.DefaultWorkingDirectory)
       
@@ -72,4 +73,4 @@ stages:
           appType: 'webAppLinux'
           WebAppName: 'wapp-student-training'
           ResourceGroupName: $(resourceGroupName)
-          packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          packageForLinux: '$(System.DefaultWorkingDirectory)/*.zip'
