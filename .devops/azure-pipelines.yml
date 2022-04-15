@@ -68,7 +68,7 @@ stages:
         inputs:
           source: 'current'
           artifactName: 'publishPackage'
-          path: $(Pipeline.Workspace)/publish
+          path: $(System.DefaultWorkingDirectory)/publish
       
       - task: AzureRmWebAppDeployment@4
         inputs:
@@ -77,4 +77,4 @@ stages:
           appType: 'webAppLinux'
           WebAppName: 'wapp-student-training'
           ResourceGroupName: $(resourceGroupName)
-          packageForLinux: '$(System.DefaultWorkingDirectory)/*.zip'
+          packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
