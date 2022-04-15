@@ -5,7 +5,7 @@ param location string = resourceGroup().location
 param repositoryUrl string = 'https://github.com/Takobz/DocumentGeneration'
 param branch string = 'master'
 
-var appServicePlanName = toLower('AppServicePlan-{webAppName}')
+var appServicePlanName = toLower('AppServicePlan-${webAppName}')
 var webSiteName = toLower('wapp-${webAppName}')
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
