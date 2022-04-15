@@ -14,27 +14,27 @@ stages:
 - stage: BuildAndPublish
   displayName: BuildAndPublish
   jobs:
-  # - job: DeployInfra
-  #   steps:
-  #   - bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
-  #     displayName: Transiple Bicep to ARM
+  - job: DeployInfra
+    steps:
+    - bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
+      displayName: Transiple Bicep to ARM
 
-  #   - task: AzureResourceManagerTemplateDeployment@3
-  #     inputs:
-  #       deploymentScope: Resource Group
-  #       action: Create Or Update Resource Group
-  #       location: 'South Africa North'
-  #       azureResourceManagerConnection:  $(serviceConnection)
-  #       resourceGroupName: $(resourceGroupName)
-  #       csmFile: 'infra/main.json'
-  #       deploymentMode: Incremental
-  #       templateLocation: Linked artifact
-  #       overrideParameters: >-
-  #         -webAppName $(webAppName)
-  #     displayName: Override Parameters
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: Resource Group
+        action: Create Or Update Resource Group
+        location: 'South Africa North'
+        azureResourceManagerConnection:  $(serviceConnection)
+        resourceGroupName: $(resourceGroupName)
+        csmFile: 'infra/main.json'
+        deploymentMode: Incremental
+        templateLocation: Linked artifact
+        overrideParameters: >-
+          -webAppName $(webAppName)
+      displayName: Override Parameters
 
   - job: BuildAndPublish
-    #dependsOn: DeployInfra
+    dependsOn: DeployInfra
     steps:
     - task: DotNetCoreCLI@1
       inputs:
