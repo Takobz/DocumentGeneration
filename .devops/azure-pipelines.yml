@@ -46,13 +46,13 @@ stages:
       inputs:
         command: publish
         projects: $(System.DefaultWorkingDirectory)/**/*.csproj
-        arguments: --configuration release --output $(System.DefaultWorkingDirectory)
+        arguments: --configuration release --output $(System.DefaultWorkingDirectory)/publish
         zipAfterPublish: true
       displayName: dotnet publish
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/*.zip'
+        targetPath: '$(System.DefaultWorkingDirectory)/publish'
         artifact: publishPackage
       displayName: Publish Artifact
 
