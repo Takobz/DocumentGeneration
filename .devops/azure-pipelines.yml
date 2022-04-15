@@ -14,27 +14,27 @@ stages:
 - stage: BuildAndPublish
   displayName: BuildAndPublish
   jobs:
-  - job: DeployInfra
-    steps:
-    - bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
-      displayName: Transiple Bicep to ARM
+  # - job: DeployInfra
+  #   steps:
+  #   - bash: az bicep build --file "infra/main.bicep" --outfile "infra/main.json"
+  #     displayName: Transiple Bicep to ARM
 
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        deploymentScope: Resource Group
-        action: Create Or Update Resource Group
-        location: 'South Africa North'
-        azureResourceManagerConnection:  $(serviceConnection)
-        resourceGroupName: $(resourceGroupName)
-        csmFile: 'infra/main.json'
-        deploymentMode: Incremental
-        templateLocation: Linked artifact
-        overrideParameters: >-
-          -webAppName $(webAppName)
-      displayName: Override Parameters
+  #   - task: AzureResourceManagerTemplateDeployment@3
+  #     inputs:
+  #       deploymentScope: Resource Group
+  #       action: Create Or Update Resource Group
+  #       location: 'South Africa North'
+  #       azureResourceManagerConnection:  $(serviceConnection)
+  #       resourceGroupName: $(resourceGroupName)
+  #       csmFile: 'infra/main.json'
+  #       deploymentMode: Incremental
+  #       templateLocation: Linked artifact
+  #       overrideParameters: >-
+  #         -webAppName $(webAppName)
+  #     displayName: Override Parameters
 
   - job: BuildAndPublish
-    dependsOn: DeployInfra
+    #dependsOn: DeployInfra
     steps:
     - task: DotNetCoreCLI@1
       inputs:
@@ -46,14 +46,16 @@ stages:
       inputs:
         command: publish
         projects: $(System.DefaultWorkingDirectory)/**/*.csproj
-        arguments: --configuration release --output $(System.DefaultWorkingDirectory)/publish
+        arguments: --configuration release --output $(Pipeline.Workspace)/publish
         zipAfterPublish: true
+        publishWebProjects: false
       displayName: dotnet publish
 
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(System.DefaultWorkingDirectory)/publish'
-        artifact: publishPackage
+        targetPath: '$(Pipeline.Workspace)/publish'
+        artifactName: publishPackage
+        artifactType: 'pipeline'
       displayName: Publish Artifact
 
 - stage: DeployWebApp
@@ -65,8 +67,8 @@ stages:
       - task: DownloadPipelineArtifact@2
         inputs:
           source: 'current'
-          artifact: 'publishPackage'
-          path: $(System.DefaultWorkingDirectory)
+          artifactName: 'publishPackage'
+          path: $(Pipeline.Workspace)/publish
       
       - task: AzureRmWebAppDeployment@4
         inputs:
